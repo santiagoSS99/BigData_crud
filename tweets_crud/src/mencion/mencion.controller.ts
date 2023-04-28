@@ -12,4 +12,5 @@ export class MencionController {
     @Param('nick') nickname: string) {
     return this.mencionService.create(createMencionDto, nickname);
   }
+
 }

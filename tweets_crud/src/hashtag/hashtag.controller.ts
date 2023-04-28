@@ -7,7 +7,7 @@ import { UpdateHashtagDto } from './dto/update-hashtag.dto';
 export class HashtagController {
   constructor(private readonly hashtagService: HashtagService) { }
 
-  @Post()
+  @Post('crear/:etiqueta')
   create(@Body() createHashtagDto: CreateHashtagDto,
     @Param('etiqueta') etiqueta: string
   ) {
