@@ -5,30 +5,17 @@ import { UpdateHashtagDto } from './dto/update-hashtag.dto';
 
 @Controller('hashtag')
 export class HashtagController {
-  constructor(private readonly hashtagService: HashtagService) {}
+  constructor(private readonly hashtagService: HashtagService) { }
 
   @Post()
-  create(@Body() createHashtagDto: CreateHashtagDto) {
-    return this.hashtagService.create(createHashtagDto);
+  create(@Body() createHashtagDto: CreateHashtagDto,
+    @Param('etiqueta') etiqueta: string
+  ) {
+    return this.hashtagService.create(createHashtagDto, etiqueta);
   }
 
   @Get()
   findAll() {
     return this.hashtagService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.hashtagService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHashtagDto: UpdateHashtagDto) {
-    return this.hashtagService.update(+id, updateHashtagDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.hashtagService.remove(+id);
   }
 }
