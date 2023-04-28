@@ -7,6 +7,7 @@ import { join } from 'path';
 import { UsuarioModule } from './usuario/usuario.module';
 import { TweetsModule } from './tweets/tweets.module';
 import { MencionModule } from './mencion/mencion.module';
+import { HashtagModule } from './hashtag/hashtag.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { MencionModule } from './mencion/mencion.module';
     }),
     UsuarioModule,
     TweetsModule,
-    MencionModule
+    MencionModule,
+    HashtagModule
 
   ],
   controllers: [AppController],

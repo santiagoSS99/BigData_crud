@@ -18,17 +18,19 @@ export class MencionService {
 
   async create(createMencionDto: CreateMencionDto, nick) {
 
-    const user = this.userRepo.findOne({
+    const user = await this.userRepo.findOne({
       where: { nickname: nick },
-      // relations: ['tweets']
+      relations: ['tweets']
     })
 
     if (!user) throw new NotFoundException(`User cannot be tagged`)
 
     const mencion = this.mentionRepo.create({
       ...createMencionDto,
-      // usuarioMencionado: user
+      usuarioMencionado: user
     })
+
+    this.mentionRepo.save(mencion)
   }
 
 }
