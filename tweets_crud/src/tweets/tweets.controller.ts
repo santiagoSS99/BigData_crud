@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { TweetsService } from './tweets.service';
 import { CreateTweetDto } from './dto/create-tweet.dto';
 import { UpdateTweetDto } from './dto/update-tweet.dto';
@@ -31,7 +31,7 @@ export class TweetsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tweetsService.remove(+id);
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.tweetsService.remove(id);
   }
 }

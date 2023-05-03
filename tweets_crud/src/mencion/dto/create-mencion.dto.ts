@@ -8,4 +8,6 @@ export class CreateMencionDto {
 
     @IsNotEmpty()
     tweet: Tweet;
+
+    menciones: Usuario[]
 }

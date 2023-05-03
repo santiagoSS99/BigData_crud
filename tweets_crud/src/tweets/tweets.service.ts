@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
 import { Repository } from 'typeorm';
 import { Tweet } from './entities/tweet.entity';
+import { Mencion } from 'src/mencion/entities/mencion.entity';
+import { async } from 'rxjs';
 
 @Injectable()
 export class TweetsService {
@@ -13,43 +15,76 @@ export class TweetsService {
     @InjectRepository(Usuario)
     private userRepository: Repository<Usuario>,
     @InjectRepository(Tweet)
-    private twRepository: Repository<Tweet>
+    private twRepository: Repository<Tweet>,
+    @InjectRepository(Mencion)
+    private mencionRepository: Repository<Mencion>
   ) { }
 
+  // async create(createTweetDto: CreateTweetDto, userId) {
+
+  //   const currentUser = await this.userRepository.findOne({
+  //     where: { id: userId },
+  //     relations: ['tweets']
+  //   });
+
+  //   if (!currentUser) throw new NotFoundException(`User not found`)
+
+  //   const twData = this.twRepository.create({
+  //     ...createTweetDto,
+  //     usuario: currentUser
+  //   })
+
+  //   const mencion = this.mencionRepository.create({
+  //     menciones: 
+  //   })
+
+  //   return this.twRepository.save(twData)
+  // }
+
   async create(createTweetDto: CreateTweetDto, userId) {
-
-    // const { ...tweet } = createTweetDto
-    // const tweeting = this.twRepository.create({
-    //   ...tweet
-    // })
-
-    // await this.twRepository.save(tweeting)
-
     const currentUser = await this.userRepository.findOne({
       where: { id: userId },
-      relations: ['tweets']
+      // relations: ['tweets'],
     });
 
-    if (!currentUser) throw new NotFoundException(`User not found`)
+    if (!currentUser) {
+      throw new NotFoundException(`User not found`);
+    }
 
-    // Aqui tuve un error debido a que el usuario espera un objeto, y le estaba pasand literalmente esto
-    // const twData = this.twRepository.create({
-    //   ...createTweetDto,
-    //   currentUser,
-    // })
-    // Esto no se puede hacer
-
-    const twData = this.twRepository.create({
+    const tweetData = {
       ...createTweetDto,
-      usuario: currentUser
-    })
+      usuario: currentUser,
+    };
 
-    return this.twRepository.save(twData)
+    const newTweet = await this.twRepository.create(tweetData);
+    const savedTweet = await this.twRepository.save(newTweet);
+
+    if (createTweetDto.menciones && createTweetDto.menciones.length > 0) {
+      const menciones = createTweetDto.menciones.map((mencion) => {
+        const newMencion = this.mencionRepository.create({
+          ...mencion,
+          tweet: savedTweet,
+        });
+        console.log(mencion)
+        return newMencion;
+      });
+
+      await this.mencionRepository.save(menciones);
+    }
+
+    return savedTweet;
   }
 
-  findAll() {
-    return `This action returns all tweets`;
+
+  async findAll(): Promise<Tweet[]> {
+    const tweets = await this.twRepository
+      .createQueryBuilder('tweet')
+      .leftJoinAndSelect('tweet.usuario', 'usuario')
+      .select(['tweet.id', 'tweet.publicacion', 'usuario.nombre', 'tweet.creado_en'])
+      .getMany();
+    return tweets;
   }
+
 
   findOne(id: number) {
     return `This action returns a #${id} tweet`;
@@ -59,7 +94,15 @@ export class TweetsService {
     return `This action updates a #${id} tweet`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} tweet`;
+  async remove(id: string) {
+    const tweet = await this.twRepository.findOne({
+      where: { id }
+    });
+
+    if (!tweet) {
+      throw new NotFoundException(`Tweet with ID ${id} not found`);
+    }
+
+    await this.twRepository.delete(tweet);
   }
 }

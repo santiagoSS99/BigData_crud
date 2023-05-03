@@ -8,8 +8,9 @@ export class HashtagController {
   constructor(private readonly hashtagService: HashtagService) { }
 
   @Post('crear/:etiqueta')
-  create(@Body() createHashtagDto: CreateHashtagDto,
-    @Param('etiqueta') etiqueta: string
+  create(
+    @Param('etiqueta') etiqueta: string,
+    @Body() createHashtagDto: CreateHashtagDto,
   ) {
     return this.hashtagService.create(createHashtagDto, etiqueta);
   }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Param } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -25,12 +25,13 @@ export class UsuarioService {
     }
   }
 
-  findAll() {
-    return `This action returns all usuario`;
+  async findAll() {
+    const usuarios = await this.userRepository.find();
+    return usuarios
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} usuario`;
+  findOne(@Param('id') id: string) {
+    return this.userRepository.findOneBy({ id: id })
   }
 
   update(id: number, updateUsuarioDto: UpdateUsuarioDto) {

@@ -18,7 +18,7 @@ export class Tweet {
     @ManyToOne(() => Usuario, (user) => user.tweets)
     usuario: Usuario
 
-    @OneToMany(() => Mencion, (mencion) => mencion.tweet)
+    @OneToMany(() => Mencion, (mencion) => mencion.tweet, { cascade: true })
     menciones: Mencion[];
 
     @ManyToMany(() => Hashtag)

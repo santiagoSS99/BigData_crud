@@ -7,7 +7,7 @@ import { UpdateMencionDto } from './dto/update-mencion.dto';
 export class MencionController {
   constructor(private readonly mencionService: MencionService) { }
 
-  @Post()
+  @Post(':nick')
   añadirUsuario(@Body() createMencionDto: CreateMencionDto,
     @Param('nick') nickname: string) {
     return this.mencionService.create(createMencionDto, nickname);
