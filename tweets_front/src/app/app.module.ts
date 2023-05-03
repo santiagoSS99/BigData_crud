@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { PosttwitterComponent } from './posttwitter/posttwitter.component';
 import { HomeComponent } from './home/home.component';
 import { VertweetComponent } from './vertweet/vertweet.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { VertweetComponent } from './vertweet/vertweet.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

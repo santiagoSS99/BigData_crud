@@ -1,36 +1,21 @@
 <div class="contenedor">
     <div class="titulo">
-        TWEETS
+        {{tweets?.length}} TWEETS
     </div>
-    <div class="tarjeta">
+    <div *ngFor="let tweet of tweets" class="tarjeta">
         <div class="datos">
+            <i src="../../assets/4021663.png" (click)="delete(tweet.id)" class="fa-solid fa-trash"></i>
             <div class="twnombre">
-                Bernardo Garcia
+                {{tweet.usuario}}
             </div>
             <div class="mensaje">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptas eligendi provident cupiditate! Porro corrupti vero eveniet et ab, earum quia beatae cumque quidem accusantium, temporibus minus. Autem doloremque quidem temporibus?
+                {{tweet.publicacion}}
             </div>
             <div class="mencion">
-                @Santi
+                {{tweet.mencion}}
             </div>
             <div class="hashtag">
-                #BigData
-            </div>
-        </div>
-    </div>
-    <div class="tarjeta">
-        <div class="datos">
-            <div class="twnombre">
-                Bernardo Garcia
-            </div>
-            <div class="mensaje">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptas eligendi provident cupiditate! Porro corrupti vero eveniet et ab, earum quia beatae cumque quidem accusantium, temporibus minus. Autem doloremque quidem temporibus?
-            </div>
-            <div class="mencion">
-                @Santi
-            </div>
-            <div class="hashtag">
-                #BigData
+                {{tweet.hashtag}}
             </div>
         </div>
     </div>

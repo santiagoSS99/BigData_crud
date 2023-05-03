@@ -1,17 +1,44 @@
+<div class="container">
+  <!-- Brand logo and title -->
+  <div class="brand-logo"></div>
+  <div class="brand-title">TWITTER</div>
 
-        <div class="container">
-            <div class="brand-logo"></div>
-            <div class="brand-title">TWITTER</div>
-        <div class="inputs" >
-              <label>Mencion</label>
-              <input type="text" placeholder="Ejemplo: Juan" />
-              </div>
-        <div class="inputs2">
-             <label>Hashtag</label>
-               <input type="text" placeholder="Ejemplo: Martinez" />
-              </div>
-        <div class="inputs3">
-             <label>Publicacion</label>
-               <input name=texto type="text7" placeholder="Escriba su tweet" />
-                 <button name=hp type="submit">ENVIAR</button>
-              </div>
+  <!-- Dropdown to select user -->
+  <div class="inputs">
+    <div>
+      <label>Selecciona un usuario:</label>
+      <select [(ngModel)]="usuarioSeleccionado" (ngModelChange)="seleccionarUsuario2(usuarioSeleccionado)">
+        <option *ngFor="let usuario of usuarios" [value]="usuario.id">{{
+          usuario.nickname }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Inputs for tweet details -->
+  <div class="datos">
+    <div class="inputs">
+      <label>Mención</label>
+      <select [(ngModel)]="usuarioTaggeado" (change)="taggearUsuario(usuarioTaggeado)">
+        <option *ngFor="let usuario of usuarios" [value]="usuario.nickname">{{
+          usuario.nickname }}
+        </option>
+      </select>
+      <!-- <input type="text" placeholder="Ejemplo: Juan" [(ngModel)]="mencion.usuarioMencionado" /> -->
+    </div>
+
+    <div class="inputs2">
+      <label>Hashtag</label>
+      <input type="text" placeholder="Ejemplo: Martinez" [(ngModel)]="tweet.hashtag" />
+    </div>
+
+    <div class="inputs3">
+      <label>Publicación</label>
+      <input name="texto" type="text" placeholder="Escriba su tweet" [(ngModel)]="tweet.publicacion"
+        [(ngModel)]="etiqueta" />
+      <button name="hp" (click)="publicarTweet(usuarioSeleccionado, usuarioTaggeado)">ENVIAR</button>
+      <!-- <button name="hp" (click)="prinseleccion()">us sele</button> -->
+      <button name="hp" (click)="prinseleccion2()">us tagg</button>
+    </div>
+  </div>
+</div>
